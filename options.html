@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head><title>Giant Bomb Plus Options</title>
+<link rel="stylesheet" type="text/css" href="css/options.css">
+</head>
+<body>
+<section id="action_block" class="hide_notification"></section>
+<h1>Giant Bomb Plus Settings</h1>
+
+<div class="option_group">
+	<h3>Filter Tab</h3>
+	<p>Toggle Filter tab on at the start of these pages</p>
+	<ul id="filter_pages">
+		<li><input type="checkbox" name="tab" id="quick_looks"> Quick Looks</li>
+		<li><input type="checkbox" name="tab" id="features"> Features</li>
+		<li><input type="checkbox" name="tab" id="unfinished"> Unfinished</li>
+		<li><input type="checkbox" name="tab" id="endurance"> Endurance Run</li>
+		<li><input type="checkbox" name="tab" id="events"> Events</li>
+		<li><input type="checkbox" name="tab" id="extra_life"> Extra Life</li>
+		<li><input type="checkbox" name="tab" id="encyclopedia"> Encyclopedia Bombastica</li>
+		<li><input type="checkbox" name="tab" id="premium"> Premium</li>
+	</ul>
+	<button id="save">Save</button>
+	<button id="reset">Reset to Default</button>
+</div>
+
+<div class="option_group">
+	<h3>Storage</h3>
+	<p>Clear all elements of a specific item</p>
+	<ul id="storage">
+		<li><button id="cache">Clear</button> Cache <span id="cache_items"></span></li>
+		<li><button id="form_data">Clear</button> Form Data <span id="form_items">(Not Currently Tracked)</span></li>
+		<li><button id="playlist">Clear</button> Playlist <span id="playlist_items"></span></li>
+		<li><button id="clear_all">Clear</button> Clear All</li>
+	</ul>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/options.js"></script>
+</body>
+</html>
