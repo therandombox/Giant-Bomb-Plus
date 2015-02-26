@@ -256,7 +256,7 @@ var playlist_module = (function(){
 				var video_id = parseInt($(this).attr("data-id"));
 				props.queue(video_id);
 			});
-			$("#site").on("click", "#queue_all", function(){
+			$("#site").on("click", "#filter_queue_all", function(){
 				get_resource(BASE_DOMAIN + VIDEO_URL, $("#filter_options").serialize() + "&action=basic&flag=queue", props.queue_all);
 			});
 			$(".toggle_playlist, .playlist_header").click(function(){
@@ -478,7 +478,7 @@ var filter_module = (function(){
 		init: function(){
 			// Build filter form and display elements
 			// TODO: combine get_form_data with get .html?
-			$.get(chrome.extension.getURL("/filter_options.html"), function(data) {
+			$.get(chrome.extension.getURL("/filter_options.html"), function(data){
 				$(".sub-nav ul li:eq(0)").after(
 					$("<li/>").append(
 						$("<a/>", {"data-toggle": "tab", "text": "Filter "}).prepend(
@@ -503,13 +503,13 @@ var filter_module = (function(){
 						get_resource(BASE_DOMAIN + VIDEO_URL, $("#filter_options").serialize() + "&action=basic", props.display_videos);
 					});
 				});
-				$("#site").on("click", "#random_video", function(event){
+				$("#site").on("click", "#filter_random", function(event){
 					$("#filter_block").fadeOut(250, function(){
 						$("#loading_block").addClass("active");
 						get_resource(BASE_DOMAIN + VIDEO_URL, $("#filter_options").serialize() + "&action=random", props.random_video);
 					});
 				});
-				$("#reset_filter").click(function(){
+				$("#filter_reset").click(function(){
 					$("input").each(function(){
 						$(this).val("");
 					});
@@ -522,6 +522,16 @@ var filter_module = (function(){
 					$("#sort").val($("#sort option:first").val());
 				});
 				$("#site").on("click", ".paginate a", props.select_page);
+				$("#filter_pin").click(function(){
+					if($(this).hasClass("selected")){
+						$(this).removeClass("selected");
+						$("#filter_block").css("margin-top", "");
+						$("#filter_options").removeClass("pinned");
+					}
+					else{
+						$(this).addClass("selected");
+					}
+				});
 				
 				// Find form data and populate
 				chrome.storage.local.get(["people", "platforms", "tags"], function(results){
@@ -539,6 +549,22 @@ var filter_module = (function(){
 				});
 				$(".sub-nav ul li:eq(1)").click(function(){
 					props.select_tab(1)
+				});
+				
+				// Sticky filter form
+				$(window).scroll(function(){
+					if($("#filter_pin").hasClass("selected")){
+						var window_top = $(window).scrollTop();
+						var div_top = $("#site").offset().top;
+						if(window_top > div_top){
+							$("#filter_block").css("margin-top", $("#filter_options").height() + "px");
+							$("#filter_options").addClass("pinned");
+						}
+						else{
+							$("#filter_block").css("margin-top", "");
+							$("#filter_options").removeClass("pinned");
+						}
+					}
 				});
 			});
 		},

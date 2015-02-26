@@ -3,7 +3,7 @@
 
 	"name": "Giant Bomb Plus",
 	"description": "Provides better tools and information while navigating through video content on Giant Bomb.",
-	"version": "0.3.2",
+	"version": "0.3.3",
 	"icons": {
 		"128": "ext_icon_128.png"
 	},

@@ -1,49 +1,57 @@
 <form id="filter_options" class="hide">
-	<div class="container row">
-		<div class="span2">
-			<input name="video_name" id="video_name" type="text" placeholder="Video Title">
+	<div class="container">
+		<div class="row">
+			<div class="span2">
+				<input name="video_name" id="video_name" type="text" placeholder="Enter Title">
+			</div>
+			<div class="span4">
+				<div class="row">
+					<div class="span12">
+						<input id="person_name" type="text" placeholder="Find People...">
+					</div>
+				</div>
+				<div class="row">
+					<div class="span12">
+						<ul id="people_list" class="empty_list">
+						</ul>
+					</div>
+				</div>
+				<select name="people[]" id="people" multiple="multiple">
+				</select>
+			</div>
+			<div class="span3">
+				<select name="platform" id="platform">
+				</select>
+			</div>
+			<div class="span3">
+				<select name="tag" id="tag">
+				</select>
+			</div>
 		</div>
-		<div class="span2">
-			<div class="row">
-				<div class="span12">
-					<input id="person_name" type="text" placeholder="Find People...">
+		<div class="row">
+			<div class="span2">
+				<select name="sort" id="sort">
+					<option value="Newest">Newest</option>
+					<option value="Oldest">Oldest</option>
+				</select>
+			</div>
+			<div class="span4">
+				<div id="filter_people">
+					<label class="radio inline" for="radio1"><input type="radio" id="radio1" name="match" value="any" checked="checked">Any</label>
+					<label class="radio inline" for="radio2"><input type="radio" id="radio2" name="match" value="require">Require</label>
 				</div>
 			</div>
-			<div class="row">
-				<div class="span12">
-					<ul id="people_list" class="empty_list">
-					</ul>
+			<div class="span6">
+				<div id="filter_special_options">
+					<a id="filter_pin"><span class="icon icon-pushpin"></span></a>
+					<a id="filter_random"><span class="icon icon-random"></span></a>
+					<a id="filter_queue_all"><span class="icon icon-th-list"></span></a>
+					<a id="filter_reset"><span class="icon icon-undo"></span></a>
 				</div>
 			</div>
-			<select name="people[]" id="people" multiple="multiple">
-			</select>
 		</div>
-		<div class="span2">
-			<select name="platform" id="platform">
-			</select>
-		</div>
-		<div class="span2">
-			<select name="tag" id="tag">
-			</select>
-		</div>
-		<div class="span2">
-			<select name="sort" id="sort">
-				<option value="Newest">Newest</option>
-				<option value="Oldest">Oldest</option>
-			</select>
-		</div>
-		<div class="span2">
-			<div id="filter_special_options" class="btn-group">
-				<button type="submit" class="btn btn-inverse">Filter</button>
-				<button type="button" class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">
-					<span class="icon icon-cog"></span>
-				</button>
-				<ul class="dropdown-menu dark" role="menu">
-					<li><a id="random_video">Random Video</a></li>
-					<li><a id="queue_all">Queue All</a></li>
-					<li><a id="reset_filter">Reset</a></li>
-				</ul>
-			</div>
+		<div class="row">
+			<button type="submit" id="filter_button" class="btn btn-inverse">Filter Videos</button>
 		</div>
 	</div>
 </form>
