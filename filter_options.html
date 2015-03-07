@@ -1,22 +1,25 @@
 <form id="filter_options" class="hide">
 	<div class="container">
 		<div class="row">
-			<div class="span2">
-				<input name="video_name" id="video_name" type="text" placeholder="Enter Title">
+			<div class="span6">
+				<input name="video_name" id="video_name" type="text" placeholder="Enter Video Name">
 			</div>
-			<div class="span4">
+		</div>
+		<div class="row">
+			<div class="span3">
 				<div class="row">
-					<div class="span12">
-						<input id="person_name" type="text" placeholder="Find People...">
-					</div>
-				</div>
-				<div class="row">
-					<div class="span12">
-						<ul id="people_list" class="empty_list">
-						</ul>
-					</div>
+					<input id="person_name" type="text" placeholder="Find People...">
+					<div class="input_counter person_count">0/5</div>
 				</div>
 				<select name="people[]" id="people" multiple="multiple">
+				</select>
+			</div>
+			<div class="span3">
+				<div class="row">
+					<input id="game_name" type="text" placeholder="Find Games...">
+					<div class="input_counter game_count">0/5</div>
+				</div>
+				<select name="games[]" id="games" multiple="multiple">
 				</select>
 			</div>
 			<div class="span3">
@@ -29,17 +32,23 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="span2">
-				<select name="sort" id="sort">
-					<option value="Newest">Newest</option>
-					<option value="Oldest">Oldest</option>
-				</select>
-			</div>
-			<div class="span4">
+			<ul id="people_list" class="empty_list">
+			</ul>
+		</div>
+		<div class="row">
+			<div class="span3">
 				<div id="filter_people">
-					<label class="radio inline" for="radio1"><input type="radio" id="radio1" name="match" value="any" checked="checked">Any</label>
-					<label class="radio inline" for="radio2"><input type="radio" id="radio2" name="match" value="require">Require</label>
+					<label class="radio inline" for="radio1"><input type="radio" id="radio1" name="match" value="Any" checked="checked">Any</label>
+					<label class="radio inline" for="radio2"><input type="radio" id="radio2" name="match" value="Require">Require</label>
 				</div>
+			</div>
+			<div class="span3">
+				<select name="sort" id="sort">
+					<option value="Newest">Sort By Newest</option>
+					<option value="Oldest">Sort By Oldest</option>
+					<option value="Longest">Sort By Longest</option>
+					<option value="Shortest">Sort By Shortest</option>
+				</select>
 			</div>
 			<div class="span6">
 				<div id="filter_special_options">

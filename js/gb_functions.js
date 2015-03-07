@@ -1,6 +1,7 @@
 var BASE_DOMAIN = "http://www.therandombox.ca";
 var VIDEO_URL = "/giantbomb/videos";
 var PEOPLE_URL = "/giantbomb/people";
+var GAME_URL = "/giantbomb/games";
 var PLATFORM_URL = "/giantbomb/platforms";
 var TAG_URL = "/giantbomb/tags";
 
@@ -18,7 +19,8 @@ function verify_cache(){
 	// TODO: combine all storage set calls? unify storage variables?
 	// Determine if cache values have expired or set to default
 	var deferred = $.Deferred();
-	chrome.storage.local.get(["cache_timestamp", "cache", "playlist", "current", "form_data_timestamp", "people", "platforms", "tags"], function(results){
+	chrome.storage.local.get(["cache_timestamp", "cache", "playlist", "current", "form_data_timestamp", "people", "games", 
+		"platforms", "tags"], function(results){
 		if(results.cache === undefined){
 			results.cache = {};
 			results.cache_timestamp = Date.now() / 1000;
@@ -39,19 +41,24 @@ function verify_cache(){
 		}
 		//console.log("Current: " + (Math.round(Date.now() / 1000) - (60 * 60 * 12)));
 		//console.log("Saved: " + results.form_data_timestamp);
-		if(results.form_data_timestamp === undefined || Math.round(Date.now() / 1000) - (60 * 60 * 12) > results.form_data_timestamp){
+		if(results.form_data_timestamp === undefined || Math.round(Date.now() / 1000) - (60 * 60 * 24) > results.form_data_timestamp
+			|| results.people === undefined || results.games === undefined || results.platforms === undefined || results.tags === undefined){
 			results.form_data_timestamp = Date.now() / 1000;
 			get_resource(BASE_DOMAIN + PEOPLE_URL, "", function(response){
 				response = JSON.parse(response);
 				chrome.storage.local.set({"people": response});
-				get_resource(BASE_DOMAIN + PLATFORM_URL, "", function(response){
+				get_resource(BASE_DOMAIN + GAME_URL, "", function(response){
 					response = JSON.parse(response);
-					chrome.storage.local.set({"platforms": response});
-					get_resource(BASE_DOMAIN + TAG_URL, "", function(response){
+					chrome.storage.local.set({"games": response});
+					get_resource(BASE_DOMAIN + PLATFORM_URL, "", function(response){
 						response = JSON.parse(response);
-						chrome.storage.local.set({"cache_timestamp": results.cache_timestamp, "cache": results.cache, "playlist": results.playlist,
-							"current": results.current, "form_data_timestamp": results.form_data_timestamp, "tags": response});
-						deferred.resolve("Cache verified");
+						chrome.storage.local.set({"platforms": response});
+						get_resource(BASE_DOMAIN + TAG_URL, "", function(response){
+							response = JSON.parse(response);
+							chrome.storage.local.set({"cache_timestamp": results.cache_timestamp, "cache": results.cache, "playlist": results.playlist,
+								"current": results.current, "form_data_timestamp": results.form_data_timestamp, "tags": response});
+							deferred.resolve("Cache verified");
+						});
 					});
 				});
 			});
@@ -79,6 +86,14 @@ function get_people_list(){
 	return data;
 }
 
+function get_games_list(){
+	var data = [];
+	$("#games option").each(function(){
+		data.push($(this).text());
+	});
+	return data;
+}
+
 function time_to_seconds(time_str){
 	var time_fragments = time_str.split(':');
 	if(time_fragments.length === 2){
@@ -96,34 +111,6 @@ function attach_list_events(){
 		$(this).remove();
 		$(".person_count").text($("#people_list li").length + "/5");
 		$("#person_name").val("");
-	});
-}
-
-function attach_typeahead_event(){
-	$("#person_name").typeahead({
-		autoselect: true,
-		hint: true,
-		highlight: true,
-		minLength: 1
-	},{
-		name: "people",
-		displayKey: "value",
-		source: substringMatcher(get_people_list())
-	}).on('typeahead:selected', function (obj, datum){
-		var person_count = $("#people_list li").length;
-		if(person_count < 5 && $("#people_list li div:contains(" + datum.value + ")").length == 0){
-			$("#people option:contains(" + datum.value + ")").attr("selected", "selected");
-			$("#people_list").append(
-				$("<li/>").append(
-					$("<div/>", {"text": datum.value})
-				).append(
-					$("<i/>", {"class": "icon icon-remove pull-right"})
-				)
-			);
-			$(".person_count").text(person_count + 1 + "/5");
-			$("#person_name").val("");
-			attach_list_events();
-		}
 	});
 }
 
@@ -483,8 +470,6 @@ var filter_module = (function(){
 					$("<li/>").append(
 						$("<a/>", {"data-toggle": "tab", "text": "Filter "}).prepend(
 							$("<i/>", {"class": "icon icon-filter"})
-						).append(
-							$("<span/>", {"class": "person_count", "text": "0/5"})
 						)
 					)
 				);
@@ -508,6 +493,18 @@ var filter_module = (function(){
 						$("#loading_block").addClass("active");
 						get_resource(BASE_DOMAIN + VIDEO_URL, $("#filter_options").serialize() + "&action=random", props.random_video);
 					});
+				});
+				$("#site").on("click", "#people_list li", function(){
+					if($(this).has(".icon-user").length > 0){
+						$("#people option:contains(" + $(this).text() + ")").removeAttr("selected");
+						$(this).remove();
+						$(".person_count").text($("#people li").has("icon-user").length + "/5");
+					}
+					else if($(this).has(".icon-gamepad").length > 0){
+						$("#games option:contains(" + $(this).text() + ")").removeAttr("selected");
+						$(this).remove();
+						$(".game_count").text($("#people li").has("icon-gamepad").length + "/5");
+					}
 				});
 				$("#filter_reset").click(function(){
 					$("input").each(function(){
@@ -534,13 +531,39 @@ var filter_module = (function(){
 				});
 				
 				// Find form data and populate
-				chrome.storage.local.get(["people", "platforms", "tags"], function(results){
+				chrome.storage.local.get(["people", "games", "platforms", "tags"], function(results){
 					$("#platform").append($("<option/>", {"value": "Any", "text": "Any Platform"}));
 					$("#tag").append($("<option/>", {"value": "Any", "text": "Any Tag"}));
 					populate_select($("#people"), results.people);
+					populate_select($("#games"), results.games);
 					populate_select($("#platform"), results.platforms);
 					populate_select($("#tag"), results.tags);
-					attach_typeahead_event();
+					
+					// Typeahead events
+					$("#person_name").typeahead({
+						autoselect: true,
+						hint: true,
+						highlight: true,
+						minLength: 2
+					},{
+						name: "people_data",
+						displayKey: "value",
+						source: substringMatcher(get_people_list())
+					}).on('typeahead:selected', function (obj, datum){
+						props.add_person(datum);
+					});
+					$("#game_name").typeahead({
+						autoselect: true,
+						hint: true,
+						highlight: true,
+						minLength: 3
+					},{
+						name: "game_data",
+						displayKey: "value",
+						source: substringMatcher(get_games_list())
+					}).on('typeahead:selected', function (obj, datum){
+						props.add_game(datum);
+					});
 				});
 				
 				// Add tab events
@@ -567,6 +590,55 @@ var filter_module = (function(){
 					}
 				});
 			});
+		},
+		add_person: function(data){
+			var person_count = $("#people_list li").has(".icon-user").length;
+			if(person_count < 5 && $("#people_list li div").filter(function(){ return $(this).text() === data.value; }).length == 0){
+				$("#people option").filter(function(){ return $(this).text() === data.value; }).attr("selected", "selected");
+				$("#people_list").append(
+					$("<li/>").append(
+						$("<div/>", {"text": data.value})
+					).append(
+						$("<i/>", {"class": "icon icon-user type pull-right"})
+					).append(
+						$("<i/>", {"class": "icon icon-remove remove pull-right"})
+					)
+				);
+				$(".person_count").text(person_count + 1 + "/5");
+				$("#person_name").val("");
+			}
+		},
+		add_game: function(data){
+			var game_count = $("#people_list li").has(".icon-gamepad").length;
+			if(game_count < 5 && $("#people_list li div").filter(function(){ return $(this).text() === data.value; }).length == 0){
+				$("#games option").filter(function(){ return $(this).text() === data.value; }).attr("selected", "selected");
+				$("#people_list").append(
+					$("<li/>").append(
+						$("<div/>", {"text": data.value})
+					).append(
+						$("<i/>", {"class": "icon icon-gamepad type pull-right"})
+					).append(
+						$("<i/>", {"class": "icon icon-remove remove pull-right"})
+					)
+				);
+				$(".game_count").text(game_count + 1 + "/5");
+				$("#game_name").val("");
+			}
+		},
+		remove_item: function(){
+			var search_term = $(this).text();
+			if($(this).has(".icon-user").length > 0){
+				$("#people option").filter(function(){ return $(this).text() === search_term; }).removeAttr("selected");
+				$(this).remove();
+				$("#person_name").val("");
+				$(".person_count").text($("#people li").has("icon-user").length + "/5");
+			}
+			else if($(this).has(".icon-gamepad").length > 0){
+				$("#games option").filter(function(){ return $(this).text() === search_term; }).removeAttr("selected");
+				$(this).remove();
+				$("#game_name").val("");
+				$(".game_count").text($("#people li").has("icon-gamepad").length + "/5");
+			}
 		},
 		build_cache: function(results){
 			// Store data of any videos that is seen by the user

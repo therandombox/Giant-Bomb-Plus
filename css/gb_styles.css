@@ -26,6 +26,7 @@ a#extension_options{
 	top:2px;
 }
 
+#filter_options .row:nth-child(2) > div{position:relative;}
 #filter_options input, #filter_options select{
 	margin:0 0 10px 0;
 	font-size:12px;
@@ -64,6 +65,16 @@ a#extension_options{
 	top:3px;
 	position:relative;
 }
+.input_counter{
+	background-color:#111;
+	color:#fff;
+	position:absolute;
+	top:4px;
+	right:-10px;
+	padding:0 4px;
+	border-radius:4px;
+	font-size:11px;
+}
 #filter_special_options{
 	font-size:12px;
 	line-height:26px;
@@ -96,23 +107,26 @@ a#extension_options{
 	display:inline-block;
 }
 #people_list li{
-	color:#fff;
+	color:#d0d1d2;
 	margin-bottom:8px;
 	margin-right:6px;
 	display:inline-block;
 	position:relative;
+	cursor:pointer;
 }
 #people_list div{
-	background-color:#303336;
+	background-color:#111;
 	color:#ccc;
-	padding:3px 30px 3px 10px;
+	padding:3px 30px 3px 30px;
 	display:inline-block;
 	font-size:11px;
-	cursor:pointer;
 	border-radius:3px;
 }
-#people_list div:hover{
+#people_list li:hover div{
 	background-color:#2e3338;
+	color:#fff;
+}
+#people_list li:hover{
 	color:#fff;
 }
 #people_list i.icon-remove{
@@ -122,10 +136,24 @@ a#extension_options{
 	width:10px;
 	line-height:26px;
 }
+#people_list i.type{
+	position:absolute;
+	top:0;
+	left:9px;
+	width:10px;
+	line-height:26px;
+}
+#people_list i.remove{
+	position:absolute;
+	top:0;
+	right:9px;
+	width:10px;
+	line-height:26px;
+}
 .empty_list{
 	margin:0;
 }
-#people{
+#people, #games{
 	display:none;
 }
 .queue_btn{
@@ -327,14 +355,14 @@ section.hide_notification#action_block{
 @media (max-width: 767px){
 	li#extension_options{display:inline-block; float:none;}
 	li#extension_options a{top:3px;}
-	#filter_options .row:nth-child(1) > div:nth-child(3), #filter_options .row:nth-child(1) > div:nth-child(4){
+	#filter_options .row:nth-child(2) > div{
 		float:left;
 		width:45%;
 	}
-	#filter_options .row:nth-child(1) > div:nth-child(3){margin-right:5%;}
-	#filter_options .row:nth-child(1) > div:nth-child(4){margin-left:5%;}
-	#filter_options .row:nth-child(2) > div:nth-child(2){margin-left:5%; margin-right:5%;}
-	#filter_options .row:nth-child(2) > div{
+	#filter_options .row:nth-child(2) > div:nth-child(odd){margin-right:5%;}
+	#filter_options .row:nth-child(2) > div:nth-child(even){margin-left:5%;}
+	#filter_options .row:nth-child(4) > div:nth-child(2){margin-left:5%; margin-right:5%;}
+	#filter_options .row:nth-child(4) > div{
 		float:left;
 		width:30%;
 	}
