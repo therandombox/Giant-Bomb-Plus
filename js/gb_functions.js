@@ -326,6 +326,7 @@ var playlist_module = (function(){
 		},
 		queue_all: function(video_data){
 			// Parse server data to see if it fits
+			console.log(video_data);
 			video_data = JSON.parse(video_data);
 			var new_video_count = video_data.length;
 			if(new_video_count > 0){
@@ -518,7 +519,7 @@ var filter_module = (function(){
 					$("#tag").val($("#tag option:first").val());
 					$("#sort").val($("#sort option:first").val());
 				});
-				$("#site").on("click", ".paginate a", props.select_page);
+				$("#site").on("click", "#filter_block .paginate a", props.select_page);
 				$("#filter_pin").click(function(){
 					if($(this).hasClass("selected")){
 						$(this).removeClass("selected");
@@ -716,12 +717,12 @@ var filter_module = (function(){
 				chrome.storage.local.get(["cache"], function(results){
 					props.build_cache(results);
 				});
-				if($(".paginate").length > 0){
+				if($("#filter_block .paginate").length > 0){
 					//$(".pagination").addClass("paginate");
 					$(".pagination").parent().closest("div").removeAttr("class"); // remove?
-					$(".paginate li.active").addClass("on");
+					$("#filter_block .paginate li.active").addClass("on");
 				}
-				$(".paginate a").each(function(){
+				$("#filter_block .paginate a").each(function(){
 					$(this).attr("class", "btn");
 					$(this).attr("data-id", $(this).attr("href"));
 					$(this).attr("href", "javascript:void(0)");

@@ -57,6 +57,7 @@ a#extension_options{
 	text-align:center;
 }
 #filter_people label{
+	color:#ccc;
 	padding-left:10px;
 }
 #filter_people input{
