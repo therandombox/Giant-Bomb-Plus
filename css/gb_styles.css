@@ -23,7 +23,6 @@ a#extension_options{
 }
 .overlay-stats i.premium-tag{
 	position:relative;
-	top:2px;
 }
 
 #filter_options .row:nth-child(2) > div{position:relative;}
@@ -273,14 +272,20 @@ div.av-wrapper-max .hide_playlist{
 	left:-60% !important;
 	-webkit-transition:all 1s ease;
 }
-li.playlist_options a:hover span, li.playlist_options a:hover{
+li.av-menu-hit.playlist_options, li.av-menu-hit.playlist_options:hover{
+	top:8px !important;
+	padding-top:0 !important;
+}
+li.av-menu-hit.playlist_options a{
+	line-height:16px;
+}
+li.av-menu-hit.playlist_options a:hover span, li.av-menu-hit.playlist_options a:hover{
 	color:#f5faff !important;
 	text-shadow:#007fff 0 0 3px,#007fff 0 0 5px !important;
 	cursor:pointer;
 }
-li.av-menu-hit.playlist_options, li.av-menu-hit.playlist_options:hover{
-	top:0 !important;
-	padding-top:0 !important;
+li.av-menu-hit.playlist_options .av-menu{
+	bottom:22px;
 }
 li.playlist_options span{
 	display:inline-block;
@@ -344,7 +349,9 @@ section.hide_notification#action_block{
 
 .tt-suggestion.tt-cursor {
 	color: #fff;
-	background-color: #0097cf;
+	background-color: #8f1414;
+	background-image: linear-gradient(#b31919,rgba(143,20,20,0));
+	background-repeat: repeat-x;
 }
 
 .tt-suggestion p {

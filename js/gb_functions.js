@@ -508,13 +508,13 @@ var filter_module = (function(){
 					}
 				});
 				$("#filter_reset").click(function(){
-					$("input").each(function(){
+					$("input[type=text]").each(function(){
 						$(this).val("");
 					});
 					$("#people_list li").each(function(){
 						$(this).trigger("click");
 					});
-					$(".person_count").text("0/5");
+					$("#radio1").trigger("click");
 					$("#platform").val($("#platform option:first").val());
 					$("#tag").val($("#tag option:first").val());
 					$("#sort").val($("#sort option:first").val());
