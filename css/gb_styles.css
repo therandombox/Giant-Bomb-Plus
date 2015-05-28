@@ -1,8 +1,10 @@
 body{}
 li#extension_options{
 	float:left;
-	font-size:18px;
-	line-height:45px;
+	font-size:20px;
+	position:relative;
+	top:-2px;
+	line-height:20px;
 }
 a#extension_options{
 	padding-left:12px;
@@ -12,10 +14,13 @@ a#extension_options{
 	line-height:38px;
 }
 #extension_options a{
-	color:#eee;
-	padding-left:12px;
+	color:#5c6370;
+	padding-left:4px;
 	position:relative;
 	top:2px;
+}
+#extension_options a:hover{
+	color:#737b8c;
 }
 #extension_options span{
 	position:relative;
